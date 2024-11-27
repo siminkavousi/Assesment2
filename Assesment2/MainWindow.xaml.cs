@@ -40,12 +40,20 @@ public partial class MainWindow : Window
         // Validate selection
         if (ContractorsList.SelectedItem is Contractor selectedContractor && JobsList.SelectedItem is Job selectedJob)
         {
-            // Create a new Requirement and add to the RequirementsSystemList
-            var requirement = new Requirement
+            // Create a new RequirementSystem and add to the RequirementsSystemList
+            var requirement = new RequirementSystem
             {
-                ContractorName = $"{selectedContractor.FirstName} {selectedContractor.LastName}",
-                JobTitle = selectedJob.Title,
-                Cost = selectedJob.Cost
+                //ContractorName = $"{selectedContractor.FirstName} {selectedContractor.LastName}",
+                //JobTitle = selectedJob.Title,
+                //Cost = selectedJob.Cost
+                Contractors = new List<Contractor>()
+                {
+                  
+                },
+                Jobs = new List<Job>()
+                {
+                    
+                }
             };
 
             RequirementsSystemList.Items.Add(requirement);
@@ -227,12 +235,12 @@ public partial class MainWindow : Window
         if (selectedContractor != null)
         {
             // Add contractor to the RequirementSystemList
-            RequirementSystemList.Items.Add(selectedContractor);
+            RequirementsSystemList.Items.Add(selectedContractor);
         }
         else if (selectedJob != null)
         {
             // Add job to the RequirementSystemList
-            RequirementSystemList.Items.Add(selectedJob);
+            RequirementsSystemList.Items.Add(selectedJob);
         }
         else
         {
@@ -244,10 +252,10 @@ public partial class MainWindow : Window
     private void RemoveRequirementButton_Click(object sender, RoutedEventArgs e)
     {
         // Check if an item is selected in the RequirementSystemList
-        if (RequirementSystemList.SelectedItem != null)
+        if (RequirementsSystemList.SelectedItem != null)
         {
             // Remove the selected item
-            RequirementSystemList.Items.Remove(RequirementSystemList.SelectedItem);
+            RequirementsSystemList.Items.Remove(RequirementsSystemList.SelectedItem);
         }
         else
         {
