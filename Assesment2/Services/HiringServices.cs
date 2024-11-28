@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Assesment2.DataModels;
 
-namespace Assesment2
+namespace Assesment2.Services
 {
-    public class RequirementSystem
+    public class HiringServices
     {
         public List<Contractor> Contractors { get; set; }
         public List<Job> Jobs { get; set; }
 
-        public RequirementSystem()
+        public HiringServices()
         {
             Contractors = new List<Contractor>();
             Jobs = new List<Job>();
@@ -36,17 +34,17 @@ namespace Assesment2
             }
         }
 
-        //public void AddJob(Job job)
-        //{
-        //    if (job != null)
-        //    {
-        //        Jobs.Add(job);
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Cannot add a null job.");
-        //    }
-        //}
+        public void AddJob(Job job)
+        {
+            if (job != null)
+            {
+                Jobs.Add(job);
+            }
+            else
+            {
+                Console.WriteLine("Cannot add a null job.");
+            }
+        }
 
         public void AssignJob(string jobTitle, string contractorFirstName, string contractorLastName)
         {
@@ -66,16 +64,16 @@ namespace Assesment2
             }
 
             // Check if the contractor is already assigned to an incomplete job
-            bool isContractorAssigned = Jobs.Any(j => j.ContractorAssigned == contractor && !j.Completed);
-            if (!isContractorAssigned)
-            {
-                job.ContractorAssigned = contractor;
-                Console.WriteLine($"Contractor {contractor.FirstName} {contractor.LastName} assigned to job '{jobTitle}'.");
-            }
-            else
-            {
-                Console.WriteLine($"Contractor {contractor.FirstName} {contractor.LastName} is already assigned to an incomplete job.");
-            }
+            //bool isContractorAssigned = Jobs.Any(j => j.ContractorAssigned == contractor && !j.Completed);
+            //if (!isContractorAssigned)
+            //{
+            //    job.ContractorAssigned = contractor;
+            //    Console.WriteLine($"Contractor {contractor.FirstName} {contractor.LastName} assigned to job '{jobTitle}'.");
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"Contractor {contractor.FirstName} {contractor.LastName} is already assigned to an incomplete job.");
+            //}
         }
 
         public void CompleteJob(string jobTitle)
@@ -102,15 +100,15 @@ namespace Assesment2
             return Jobs;
         }
 
-        public List<Contractor> GetAvailableContractors()
-        {
-            return Contractors.Where(c => !Jobs.Any(j => j.ContractorAssigned == c && !j.Completed)).ToList();
-        }
+        //public List<Contractor> GetAvailableContractors()
+        //{
+        //    return Contractors.Where(c => !Jobs.Any(j => j.ContractorAssigned == c && !j.Completed)).ToList();
+        //}
 
-        public List<Job> GetUnassignedJobs()
-        {
-            return Jobs.Where(j => j.ContractorAssigned == null && !j.Completed).ToList();
-        }
+        //public List<Job> GetUnassignedJobs()
+        //{
+        //    return Jobs.Where(j => j.ContractorAssigned == null && !j.Completed).ToList();
+        //}
 
         public List<Job> GetJobsWithinCostRange(decimal minCost, decimal maxCost)
         {

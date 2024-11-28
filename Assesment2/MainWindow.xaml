@@ -63,7 +63,7 @@
         <TextBox x:Name="FirstNameBox" HorizontalAlignment="Left" Margin="15,322,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="First Name" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" TextChanged="FirstNameBox_TextChanged"/>
         <TextBox x:Name="LastNameBox" HorizontalAlignment="Left" Margin="15,355,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="Last Name" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
         <TextBox x:Name="HourlyWageBox" HorizontalAlignment="Left" Margin="15,384,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="Hourly Wage" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-        <TextBox x:Name="IDBox" HorizontalAlignment="Left" Margin="15,291,0,0" VerticalAlignment="Top" Width="150" Text="ID" Height="25" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+        <TextBox x:Name="IDBox" HorizontalAlignment="Left" Margin="15,291,0,0" VerticalAlignment="Top" Width="150" Text="Id" Height="25" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
         <DatePicker x:Name="StartDatePicker"  HorizontalAlignment="Left" Margin="15,415,0,0" VerticalAlignment="Top" Width="150" SelectedDate="{x:Null}" Height="25" />
 
         <Button x:Name="AddContractorButton" Content="Add Contractor" HorizontalAlignment="Left" Margin="15,445,0,0" VerticalAlignment="Top" Width="150" Click="AddContractor_Click" Height="25" RenderTransformOrigin="0.51,1.359"/>

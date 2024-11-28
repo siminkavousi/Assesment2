@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Assesment2.DataModels;
 
 namespace Assesment2;
 
@@ -17,7 +18,7 @@ public partial class MainWindow : Window
     {
         var textBox = sender as TextBox;
         if (textBox != null)
-            if (textBox.Text == "ID" || textBox.Text == "First Name" || textBox.Text == "Last Name" || textBox.Text == "Hourly Wage" ||
+            if (textBox.Text == "Id" || textBox.Text == "First Name" || textBox.Text == "Last Name" || textBox.Text == "Hourly Wage" ||
                 textBox.Text == "Job Title" || textBox.Text == "Job Cost")
                 textBox.Text = "";
     }
@@ -27,7 +28,7 @@ public partial class MainWindow : Window
         var textBox = sender as TextBox;
         if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
         {
-            if (textBox.Name == "IDBox") textBox.Text = "ID";
+            if (textBox.Name == "IDBox") textBox.Text = "Id";
             else if (textBox.Name == "FirstNameBox") textBox.Text = "First Name";
             else if (textBox.Name == "LastNameBox") textBox.Text = "Last Name";
             else if (textBox.Name == "HourlyWageBox") textBox.Text = "Hourly Wage";
@@ -91,11 +92,14 @@ public partial class MainWindow : Window
 
         // Format the contractor entry string to include Start Date
         //string contractorEntry = $"{firstName} {lastName} - ${hourlyWage}/hour - Start Date: {startDate.Value.ToShortDateString()}";
-        var contractorEntry = new Contractor(Convert.ToInt32(iDBox),
-            firstName,
-            lastName,
-            StartDatePicker.SelectedDate.Value.ToShortDateString(),
-            hourlyWage);
+        var contractorEntry = new Contractor()
+        {
+           Id = Convert.ToInt32(iDBox),
+           FirstName = firstName,
+           LastName = lastName,
+           StartDate = StartDatePicker.SelectedDate.Value.ToShortDateString(),
+           HourlyWage = hourlyWage
+        };
 
         ;
         ContractorsList.Items.Add(contractorEntry);
@@ -108,7 +112,7 @@ public partial class MainWindow : Window
         HourlyWageBox.Clear();
         HourlyWageBox.Text = "Hourly Wage";
         IDBox.Clear();
-        IDBox.Text = "ID";
+        IDBox.Text = "Id";
         StartDatePicker.SelectedDate = null;
     }
 
@@ -127,7 +131,7 @@ public partial class MainWindow : Window
         var selectedContractor = ContractorsList.SelectedItem as Contractor;
         if (selectedContractor == null)
         {
-            MessageBox.Show("Please select a relevent contractor to add a new Job.");
+            MessageBox.Show("Please select a relevant contractor to add a new Job.");
             return;
         }
         if (!string.IsNullOrEmpty(jobTitle) && !string.IsNullOrEmpty(jobCost))
@@ -136,9 +140,13 @@ public partial class MainWindow : Window
 
             if (selectedContractor != null)
             {
-                var jobEntry = new Job(jobTitle,
-                    JobDatePicker.SelectedDate.Value.ToShortDateString(),
-                    decimal.Parse(jobCost), selectedContractor);
+                var jobEntry = new Job()
+                {
+                   Title = jobTitle,
+                    Date = JobDatePicker.SelectedDate.Value.ToShortDateString(),
+                    Cost = decimal.Parse(jobCost),
+                    Completed = JobCompletedCheckBox.IsChecked.HasValue
+                };
                 JobsList.Items.Add(jobEntry);
             }
 
@@ -190,7 +198,7 @@ public partial class MainWindow : Window
                 FirstNameBox.Text = contractor.FirstName;
                 LastNameBox.Text = contractor.LastName;
                 HourlyWageBox.Text = contractor.HourlyWage.ToString();
-                IDBox.Text = contractor.ID.ToString();
+                IDBox.Text = contractor.Id.ToString();
                 StartDatePicker.SelectedDate = DateTime.Parse(contractor.StartDate);
             }
         }

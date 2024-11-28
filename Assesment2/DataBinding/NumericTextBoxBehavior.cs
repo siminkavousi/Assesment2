@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Assesment2;
+namespace Assesment2.DataBinding;
 
 public static class NumericTextBoxBehavior
 {
