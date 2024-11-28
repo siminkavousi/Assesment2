@@ -36,17 +36,17 @@ namespace Assesment2
             }
         }
 
-        public void AddJob(Job job)
-        {
-            if (job != null)
-            {
-                Jobs.Add(job);
-            }
-            else
-            {
-                Console.WriteLine("Cannot add a null job.");
-            }
-        }
+        //public void AddJob(Job job)
+        //{
+        //    if (job != null)
+        //    {
+        //        Jobs.Add(job);
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Cannot add a null job.");
+        //    }
+        //}
 
         public void AssignJob(string jobTitle, string contractorFirstName, string contractorLastName)
         {

@@ -55,18 +55,18 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
+
 
         <Label Content="Contractors" Margin="54,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="72"/>
         <Label Content="Jobs" Margin="482,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
 
-        <TextBox x:Name="FirstNameBox" HorizontalAlignment="Left" Margin="15,322,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="First Name" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" RenderTransformOrigin="0.496,0.509"/>
+        <TextBox x:Name="FirstNameBox" HorizontalAlignment="Left" Margin="15,322,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="First Name" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" TextChanged="FirstNameBox_TextChanged"/>
         <TextBox x:Name="LastNameBox" HorizontalAlignment="Left" Margin="15,355,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="Last Name" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
         <TextBox x:Name="HourlyWageBox" HorizontalAlignment="Left" Margin="15,384,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="Hourly Wage" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-        <TextBox x:Name="IDBox" PreviewTextInput="IDBox_PreviewTextInput"  HorizontalAlignment="Left" Margin="15,291,0,0" VerticalAlignment="Top" Width="150" Text="ID" Height="25" RenderTransformOrigin="0.498,1.008"/>
+        <TextBox x:Name="IDBox" HorizontalAlignment="Left" Margin="15,291,0,0" VerticalAlignment="Top" Width="150" Text="ID" Height="25" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
         <DatePicker x:Name="StartDatePicker"  HorizontalAlignment="Left" Margin="15,415,0,0" VerticalAlignment="Top" Width="150" SelectedDate="{x:Null}" Height="25" />
 
-        <Button x:Name="AddContractorButton" Content="Add Contractor" HorizontalAlignment="Right" Margin="0,445,435,0" VerticalAlignment="Top" Width="150" Click="AddContractor_Click" Height="25" RenderTransformOrigin="0.51,1.359"/>
+        <Button x:Name="AddContractorButton" Content="Add Contractor" HorizontalAlignment="Left" Margin="15,445,0,0" VerticalAlignment="Top" Width="150" Click="AddContractor_Click" Height="25" RenderTransformOrigin="0.51,1.359"/>
         <Button x:Name="RemoveContractorButton" Content="Remove Contractor" HorizontalAlignment="Left" Margin="15,476,0,0" VerticalAlignment="Top" Width="150" Click="RemoveContractor_Click" Height="25" RenderTransformOrigin="0.5,0.722"/>
 
         <TextBox x:Name="JobTitleBox" HorizontalAlignment="Left" Margin="428,291,0,0" VerticalAlignment="Top" Width="150" Height="25" Text="Job Title" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
@@ -76,6 +76,9 @@
 
         <Button x:Name="AddJobButton" Content="Add Job" HorizontalAlignment="Left" Margin="428,415,0,0" VerticalAlignment="Top" Width="150" Click="AddJob_Click" Height="25"/>
         <Button x:Name="RemoveJobButton" Content="Remove Job" HorizontalAlignment="Left" Margin="428,445,0,0" VerticalAlignment="Top" Width="150" Click="RemoveJob_Click" Height="25"/>
+
+        <Button x:Name="MixAndAddButton" Content="Mix and Add" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,355,0,0" Width="150" Height="25" Click="MixAndAddButton_Click" RenderTransformOrigin="0.5,-0.238"/>
+
         <Button x:Name="AddRequirementButton" Content="Add Requirement" HorizontalAlignment="Center" Margin="0,291,0,0" VerticalAlignment="Top" Width="150" Click="AddRequirementButton_Click" Height="25"/>
         <Button x:Name="RemoveRequirementButton" Content="Remove Requirement" HorizontalAlignment="Center" Margin="0,322,0,0" VerticalAlignment="Top" Width="150" Click="RemoveRequirementButton_Click" Height="25"/>
     </Grid>

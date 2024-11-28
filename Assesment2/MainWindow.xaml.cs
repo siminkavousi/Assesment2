@@ -17,7 +17,7 @@ public partial class MainWindow : Window
     {
         var textBox = sender as TextBox;
         if (textBox != null)
-            if (textBox.Text == "First Name" || textBox.Text == "Last Name" || textBox.Text == "Hourly Wage" ||
+            if (textBox.Text == "ID" || textBox.Text == "First Name" || textBox.Text == "Last Name" || textBox.Text == "Hourly Wage" ||
                 textBox.Text == "Job Title" || textBox.Text == "Job Cost")
                 textBox.Text = "";
     }
@@ -27,7 +27,8 @@ public partial class MainWindow : Window
         var textBox = sender as TextBox;
         if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
         {
-            if (textBox.Name == "FirstNameBox") textBox.Text = "First Name";
+            if (textBox.Name == "IDBox") textBox.Text = "ID";
+            else if (textBox.Name == "FirstNameBox") textBox.Text = "First Name";
             else if (textBox.Name == "LastNameBox") textBox.Text = "Last Name";
             else if (textBox.Name == "HourlyWageBox") textBox.Text = "Hourly Wage";
             else if (textBox.Name == "JobTitleBox") textBox.Text = "Job Title";
@@ -48,11 +49,11 @@ public partial class MainWindow : Window
                 //Cost = selectedJob.Cost
                 Contractors = new List<Contractor>()
                 {
-                  
+
                 },
                 Jobs = new List<Job>()
                 {
-                    
+
                 }
             };
 
@@ -96,7 +97,6 @@ public partial class MainWindow : Window
             StartDatePicker.SelectedDate.Value.ToShortDateString(),
             hourlyWage);
 
-
         ;
         ContractorsList.Items.Add(contractorEntry);
 
@@ -125,7 +125,11 @@ public partial class MainWindow : Window
         var jobTitle = JobTitleBox.Text.Trim();
         var jobCost = JobCostBox.Text.Trim();
         var selectedContractor = ContractorsList.SelectedItem as Contractor;
-
+        if (selectedContractor == null)
+        {
+            MessageBox.Show("Please select a relevent contractor to add a new Job.");
+            return;
+        }
         if (!string.IsNullOrEmpty(jobTitle) && !string.IsNullOrEmpty(jobCost))
         {
             //var jobEntry = $"{jobTitle} - ${jobCost}";
@@ -167,6 +171,7 @@ public partial class MainWindow : Window
     private void JobCompletedCheckBox_Checked(object sender, RoutedEventArgs e)
     {
     }
+
 
     private void ContractorsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
     {
@@ -263,7 +268,8 @@ public partial class MainWindow : Window
         }
     }
 
+    private void FirstNameBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
 
-
-
+    }
 }
