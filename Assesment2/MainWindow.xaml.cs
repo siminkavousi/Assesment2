@@ -1,17 +1,71 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Assesment2.DataModels;
+using Assesment2.Services;
 
 namespace Assesment2;
 
 public partial class MainWindow : Window
 {
+    // Declare a class-level reference to the shared DataService
+    private readonly DataService _dataService;
+    public ObservableCollection<Contractor> Contractors { get; set; }
+    public ObservableCollection<Job> Jobs { get; set; }
+    public ObservableCollection<RequirementSystem> RequirementSystems { get; set; }
+
+
     public MainWindow()
     {
         InitializeComponent();
-        // List of contractors to add sample for testing 
+        _dataService = DataService.Instance;
+
+        // Initialize ObservableCollections
+        Contractors = new ObservableCollection<Contractor>(_dataService.GetAllContractors());
+        Jobs = new ObservableCollection<Job>(_dataService.GetAllJobs());
+        RequirementSystems = new ObservableCollection<RequirementSystem>(_dataService.GetAllRequirementSystems());
+
+        // Bind to UI elements
+        ContractorsList.ItemsSource = Contractors;
+        JobsList.ItemsSource = Jobs;
+        RequirementsSystemList.ItemsSource = RequirementSystems;
+
+        // Ensure button is disabled initially
+        MixAndAddButton.IsEnabled = false;
+
+        // Initialize RemoveRequirementButton state
+        RemoveRequirementButton.IsEnabled = false;
+
+    }
+
+    // Load and bind data to UI components
+    private void LoadData()
+    {
+        JobsList.ItemsSource = _dataService.GetAllJobs();
+        ContractorsList.ItemsSource = _dataService.GetAllContractors();
+        RequirementsSystemList.ItemsSource = _dataService.GetAllRequirementSystems();
+    }
+
+    // Helper methods to refresh specific lists in the UI
+    private void RefreshJobs()
+    {
+        JobsList.ItemsSource = null;
+        JobsList.ItemsSource = _dataService.GetAllJobs();
+    }
+
+    private void RefreshContractors()
+    {
+        ContractorsList.ItemsSource = null;
+        ContractorsList.ItemsSource = _dataService.GetAllContractors();
+    }
+
+    private void RefreshRequirementSystems()
+    {
+        RequirementsSystemList.ItemsSource = null;
+        RequirementsSystemList.ItemsSource = _dataService.GetAllRequirementSystems();
     }
 
     private void TextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -39,31 +93,23 @@ public partial class MainWindow : Window
 
     private void MixAndAddButton_Click(object sender, RoutedEventArgs e)
     {
-        // Validate selection
-        if (ContractorsList.SelectedItem is Contractor selectedContractor && JobsList.SelectedItem is Job selectedJob)
+        if (ContractorsList.SelectedItem is Contractor selectedContractor &&
+            JobsList.SelectedItem is Job selectedJob)
         {
-            // Create a new RequirementSystem and add to the RequirementsSystemList
+            // Create a new RequirementSystem with selected contractor and job
             var requirement = new RequirementSystem
             {
-                //ContractorName = $"{selectedContractor.FirstName} {selectedContractor.LastName}",
-                //JobTitle = selectedJob.Title,
-                //Cost = selectedJob.Cost
-                Contractors = new List<Contractor>()
-                {
-
-                },
-                Jobs = new List<Job>()
-                {
-
-                }
+                Contractors = new List<Contractor> { selectedContractor },
+                Jobs = new List<Job> { selectedJob }
             };
 
-            RequirementsSystemList.Items.Add(requirement);
-            MessageBox.Show("Requirement added successfully.");
+            // Add the new requirement system to the DataService and ObservableCollection
+            var addedRequirement = DataService.Instance.AddRequirementSystem(requirement);
+            RequirementSystems.Add(addedRequirement); // Update the ObservableCollection
         }
         else
         {
-            MessageBox.Show("Please select a contractor and a job to mix.");
+            MessageBox.Show("Please select both a Contractor and a Job to create a Requirement.");
         }
     }
 
@@ -92,17 +138,19 @@ public partial class MainWindow : Window
 
         // Format the contractor entry string to include Start Date
         //string contractorEntry = $"{firstName} {lastName} - ${hourlyWage}/hour - Start Date: {startDate.Value.ToShortDateString()}";
-        var contractorEntry = new Contractor()
+        var newContractor = new Contractor()
         {
-           Id = Convert.ToInt32(iDBox),
-           FirstName = firstName,
-           LastName = lastName,
-           StartDate = StartDatePicker.SelectedDate.Value.ToShortDateString(),
-           HourlyWage = hourlyWage
+            Id = Convert.ToInt32(iDBox),
+            FirstName = firstName,
+            LastName = lastName,
+            StartDate = StartDatePicker.SelectedDate.Value.ToShortDateString(),
+            HourlyWage = hourlyWage
         };
 
-        ;
-        ContractorsList.Items.Add(contractorEntry);
+
+        //ContractorsList.Items.Add(contractorEntry);
+        var addedContractor = DataService.Instance.AddContractor(newContractor);
+        Contractors.Add(addedContractor); // Add to ObservableCollection
 
         // Clear fields after adding contractor
         FirstNameBox.Clear();
@@ -118,8 +166,11 @@ public partial class MainWindow : Window
 
     public void RemoveContractor_Click(object sender, RoutedEventArgs e)
     {
-        if (ContractorsList.SelectedItem != null)
-            ContractorsList.Items.Remove(ContractorsList.SelectedItem);
+        if (ContractorsList.SelectedItem is Contractor selectedContractor)
+        {
+            if (_dataService.DeleteContractor(selectedContractor.Id))
+                Contractors.Remove(selectedContractor);
+        }
         else
             MessageBox.Show("Please select a contractor to remove.");
     }
@@ -128,27 +179,23 @@ public partial class MainWindow : Window
     {
         var jobTitle = JobTitleBox.Text.Trim();
         var jobCost = JobCostBox.Text.Trim();
-        var selectedContractor = ContractorsList.SelectedItem as Contractor;
-        if (selectedContractor == null)
-        {
-            MessageBox.Show("Please select a relevant contractor to add a new Job.");
-            return;
-        }
+
         if (!string.IsNullOrEmpty(jobTitle) && !string.IsNullOrEmpty(jobCost))
         {
             //var jobEntry = $"{jobTitle} - ${jobCost}";
 
-            if (selectedContractor != null)
+            var newJob = new Job()
             {
-                var jobEntry = new Job()
-                {
-                   Title = jobTitle,
-                    Date = JobDatePicker.SelectedDate.Value.ToShortDateString(),
-                    Cost = decimal.Parse(jobCost),
-                    Completed = JobCompletedCheckBox.IsChecked.HasValue
-                };
-                JobsList.Items.Add(jobEntry);
-            }
+                Title = jobTitle,
+                Date = JobDatePicker.SelectedDate.Value.ToShortDateString(),
+                Cost = decimal.Parse(jobCost),
+                Completed = JobCompletedCheckBox.IsChecked.HasValue
+            };
+
+            var addedContractor = DataService.Instance.AddJob(newJob);
+            Jobs.Add(newJob); // Add to ObservableCollection
+
+            //JobsList.Items.Add(newJob);
 
             JobTitleBox.Clear();
             JobCostBox.Clear();
@@ -163,8 +210,11 @@ public partial class MainWindow : Window
 
     public void RemoveJob_Click(object sender, RoutedEventArgs e)
     {
-        if (JobsList.SelectedItem != null)
-            JobsList.Items.Remove(JobsList.SelectedItem);
+        if (JobsList.SelectedItem is Job selectedJob)
+        {
+            if (_dataService.DeleteJob(selectedJob.Id))
+                Jobs.Remove(selectedJob);
+        }
         else
             MessageBox.Show("Please select a job to remove.");
     }
@@ -202,6 +252,7 @@ public partial class MainWindow : Window
                 StartDatePicker.SelectedDate = DateTime.Parse(contractor.StartDate);
             }
         }
+        UpdateMixAndAddButtonState();
     }
 
     // PreviewTextInput handler for IDBox
@@ -238,6 +289,8 @@ public partial class MainWindow : Window
                 JobCompletedCheckBox.IsChecked = job.Completed;
             }
         }
+
+        UpdateMixAndAddButtonState();
     }
     private void AddRequirementButton_Click(object sender, RoutedEventArgs e)
     {
@@ -264,15 +317,13 @@ public partial class MainWindow : Window
     // Remove Requirement Button Click Event
     private void RemoveRequirementButton_Click(object sender, RoutedEventArgs e)
     {
-        // Check if an item is selected in the RequirementSystemList
-        if (RequirementsSystemList.SelectedItem != null)
+        if (RequirementsSystemList.SelectedItem is RequirementSystem selectedRequirement)
         {
-            // Remove the selected item
-            RequirementsSystemList.Items.Remove(RequirementsSystemList.SelectedItem);
-        }
-        else
-        {
-            MessageBox.Show("Please select an item to remove from the Requirement System.");
+            if (_dataService.DeleteRequirementSystem(selectedRequirement.Id))
+            {
+                RequirementSystems.Remove(selectedRequirement); // Update the ObservableCollection
+                UpdateRemoveRequirementButtonState(); // Ensure button state is updated
+            }
         }
     }
 
@@ -280,4 +331,17 @@ public partial class MainWindow : Window
     {
 
     }
+
+    private void UpdateMixAndAddButtonState()
+    {
+        // Enable the button only if both a job and a contractor are selected
+        MixAndAddButton.IsEnabled = JobsList.SelectedItem != null && ContractorsList.SelectedItem != null;
+    }
+
+    private void UpdateRemoveRequirementButtonState()
+    {
+        // Enable the button only if a requirement is selected
+        RemoveRequirementButton.IsEnabled = RequirementsSystemList.SelectedItem != null;
+    }
+
 }

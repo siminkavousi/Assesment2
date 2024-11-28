@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="800" Width="600">
     <Grid>
-        <ListBox x:Name="ContractorsList" Margin="15,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Left" SelectionChanged="ContractorsList_SelectionChanged_1"
+        <ListBox x:Name="ContractorsList" ItemsSource="{Binding Contractors}" Margin="15,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Left" SelectionChanged="ContractorsList_SelectionChanged_1"
                  >
             <!-- Define the custom item template -->
             <ListBox.ItemTemplate>
@@ -22,7 +22,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="JobsList" Margin="428,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Left" RenderTransformOrigin="0.513,0.512" SelectionChanged="JobsList_SelectionChanged">
+        <ListBox x:Name="JobsList" ItemsSource="{Binding Jobs}" Margin="428,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Left" RenderTransformOrigin="0.513,0.512" SelectionChanged="JobsList_SelectionChanged">
             
             <!-- Define the custom item template -->
             <ListBox.ItemTemplate>
@@ -40,12 +40,12 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Label Content="Requirement System" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="120"/>
-        <ListBox x:Name="RequirementsSystemList" Margin="0,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Center">
+        <ListBox x:Name="RequirementsSystemList" ItemsSource="{Binding RequirementSystems}" Margin="0,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Center">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
                         <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} {1} with job {2} for {3:C}">
+                            <MultiBinding StringFormat="{}{0} with job {1} for {2:C}">
                                 <Binding Path="ContractorName" />
                                 <Binding Path="JobTitle" />
                                 <Binding Path="Cost" />
@@ -55,7 +55,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
 
         <Label Content="Contractors" Margin="54,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="72"/>
         <Label Content="Jobs" Margin="482,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42"/>
@@ -77,9 +76,7 @@
         <Button x:Name="AddJobButton" Content="Add Job" HorizontalAlignment="Left" Margin="428,415,0,0" VerticalAlignment="Top" Width="150" Click="AddJob_Click" Height="25"/>
         <Button x:Name="RemoveJobButton" Content="Remove Job" HorizontalAlignment="Left" Margin="428,445,0,0" VerticalAlignment="Top" Width="150" Click="RemoveJob_Click" Height="25"/>
 
-        <Button x:Name="MixAndAddButton" Content="Mix and Add" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,355,0,0" Width="150" Height="25" Click="MixAndAddButton_Click" RenderTransformOrigin="0.5,-0.238"/>
-
-        <Button x:Name="AddRequirementButton" Content="Add Requirement" HorizontalAlignment="Center" Margin="0,291,0,0" VerticalAlignment="Top" Width="150" Click="AddRequirementButton_Click" Height="25"/>
-        <Button x:Name="RemoveRequirementButton" Content="Remove Requirement" HorizontalAlignment="Center" Margin="0,322,0,0" VerticalAlignment="Top" Width="150" Click="RemoveRequirementButton_Click" Height="25"/>
+        <Button x:Name="MixAndAddButton" Content="Mix and Add" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,355,0,0" Width="150" Height="25" Click="MixAndAddButton_Click" RenderTransformOrigin="0.5,-0.238" IsEnabled="False"/>
+        <Button x:Name="RemoveRequirementButton" Content="Remove Requirement" HorizontalAlignment="Center" Margin="0,322,0,0" VerticalAlignment="Top" Width="150" Click="RemoveRequirementButton_Click" Height="25" IsEnabled="False"/>
     </Grid>
 </Window>
