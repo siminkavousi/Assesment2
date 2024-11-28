@@ -184,12 +184,12 @@ public partial class MainWindow : Window
     private void ContractorsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
     {
         // Retrieve the ListBox instance
-        var listBox = sender as ListBox;
+        var contractorsListBox = sender as ListBox;
 
-        if (listBox != null)
+        if (contractorsListBox != null)
         {
             // Access all selected items
-            var selectedItems = listBox.SelectedItems;
+            var selectedItems = contractorsListBox.SelectedItems;
 
             var item = selectedItems[0];
             if (item is Contractor contractor)
@@ -220,12 +220,12 @@ public partial class MainWindow : Window
     private void JobsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // Retrieve the ListBox instance
-        var listBox = sender as ListBox;
+        var jobsListBox = sender as ListBox;
 
-        if (listBox != null)
+        if (jobsListBox != null)
         {
             // Access all selected items
-            var selectedItems = listBox.SelectedItems;
+            var selectedItems = jobsListBox.SelectedItems;
 
             var item = selectedItems[0];
             if (item is Job job)

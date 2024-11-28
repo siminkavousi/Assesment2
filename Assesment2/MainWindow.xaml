@@ -23,7 +23,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <ListBox x:Name="JobsList" Margin="428,35,0,0" VerticalAlignment="Top" Height="246" Width="150" HorizontalAlignment="Left" RenderTransformOrigin="0.513,0.512" SelectionChanged="JobsList_SelectionChanged">
-            >
+            
             <!-- Define the custom item template -->
             <ListBox.ItemTemplate>
                 <DataTemplate>
