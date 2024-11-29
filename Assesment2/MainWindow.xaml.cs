@@ -41,33 +41,6 @@ public partial class MainWindow : Window
 
     }
 
-    // Load and bind data to UI components
-    private void LoadData()
-    {
-        JobsList.ItemsSource = _dataService.GetAllJobs();
-        ContractorsList.ItemsSource = _dataService.GetAllContractors();
-        RequirementsSystemList.ItemsSource = _dataService.GetAllRequirementSystems();
-    }
-
-    // Helper methods to refresh specific lists in the UI
-    private void RefreshJobs()
-    {
-        JobsList.ItemsSource = null;
-        JobsList.ItemsSource = _dataService.GetAllJobs();
-    }
-
-    private void RefreshContractors()
-    {
-        ContractorsList.ItemsSource = null;
-        ContractorsList.ItemsSource = _dataService.GetAllContractors();
-    }
-
-    private void RefreshRequirementSystems()
-    {
-        RequirementsSystemList.ItemsSource = null;
-        RequirementsSystemList.ItemsSource = _dataService.GetAllRequirementSystems();
-    }
-
     private void TextBox_GotFocus(object sender, RoutedEventArgs e)
     {
         var textBox = sender as TextBox;
@@ -218,20 +191,13 @@ public partial class MainWindow : Window
         else
             MessageBox.Show("Please select a job to remove.");
     }
-
-
-
-    private void HourlyWageBox_TextChanged(object sender, TextChangedEventArgs e)
-    {
-    }
-
-
+    
     private void JobCompletedCheckBox_Checked(object sender, RoutedEventArgs e)
     {
     }
 
 
-    private void ContractorsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+    private void ContractorsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // Retrieve the ListBox instance
         var contractorsListBox = sender as ListBox;
@@ -278,40 +244,22 @@ public partial class MainWindow : Window
             // Access all selected items
             var selectedItems = jobsListBox.SelectedItems;
 
-            var item = selectedItems[0];
-            if (item is Job job)
+            if (selectedItems.Count > 0)
             {
-                MessageBox.Show($"Selected Contractor: {job.Title}");
-                JobTitleBox.Text = job.Title;
-                JobCostBox.Text = job.Cost.ToString("C");
+                var item = selectedItems[0];
+                if (item is Job job)
+                {
+                    MessageBox.Show($"Selected Contractor: {job.Title}");
+                    JobTitleBox.Text = job.Title;
+                    JobCostBox.Text = job.Cost.ToString("C");
 
-                JobDatePicker.SelectedDate = DateTime.Parse(job.Date);
-                JobCompletedCheckBox.IsChecked = job.Completed;
+                    JobDatePicker.SelectedDate = DateTime.Parse(job.Date);
+                    JobCompletedCheckBox.IsChecked = job.Completed;
+                }
             }
         }
 
         UpdateMixAndAddButtonState();
-    }
-    private void AddRequirementButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Check if a contractor or job is selected
-        var selectedContractor = ContractorsList.SelectedItem;
-        var selectedJob = JobsList.SelectedItem;
-
-        if (selectedContractor != null)
-        {
-            // Add contractor to the RequirementSystemList
-            RequirementsSystemList.Items.Add(selectedContractor);
-        }
-        else if (selectedJob != null)
-        {
-            // Add job to the RequirementSystemList
-            RequirementsSystemList.Items.Add(selectedJob);
-        }
-        else
-        {
-            MessageBox.Show("Please select a contractor or job to add to the Requirement System.");
-        }
     }
 
     // Remove Requirement Button Click Event
@@ -344,4 +292,8 @@ public partial class MainWindow : Window
         RemoveRequirementButton.IsEnabled = RequirementsSystemList.SelectedItem != null;
     }
 
+    private void RequirementsSystemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        UpdateRemoveRequirementButtonState();
+    }
 }
